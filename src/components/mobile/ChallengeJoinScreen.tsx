@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, Camera, Upload, QrCode, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { ArrowLeft, Camera, Upload, QrCode, CheckCircle, AlertCircle, Loader2, Share2, Heart, MessageCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -11,7 +11,7 @@ interface Challenge {
   points: number;
 }
 
-type VerificationMethod = "qr" | "receipt" | null;
+type VerificationMethod = "qr" | "receipt" | "social" | "task" | "external" | null;
 type VerificationStatus = "idle" | "uploading" | "verifying" | "success" | "error";
 
 export const ChallengeJoinScreen = ({ 
@@ -187,9 +187,9 @@ export const ChallengeJoinScreen = ({
 
         {/* Verification Methods */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Verify Your Purchase</h3>
+          <h3 className="text-lg font-semibold">How to Participate</h3>
           <p className="text-muted-foreground text-sm">
-            Choose how you'd like to verify your purchase to join this challenge.
+            Choose your preferred method to participate in this challenge.
           </p>
 
           {/* QR Code Option */}
@@ -206,13 +206,13 @@ export const ChallengeJoinScreen = ({
               <div className="flex-1">
                 <h4 className="font-semibold">Scan QR Code</h4>
                 <p className="text-sm text-muted-foreground">
-                  Scan the QR code on your receipt for instant verification
+                  Scan QR code from receipt or easter egg
                 </p>
               </div>
             </div>
           </Card>
 
-          {/* Receipt Upload Option */}
+          {/* Photo/Video Upload */}
           <Card 
             className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
               selectedMethod === "receipt" ? "border-primary bg-primary/5" : "border-border"
@@ -221,12 +221,72 @@ export const ChallengeJoinScreen = ({
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
-                <Upload className="h-6 w-6 text-secondary-foreground" />
+                <Camera className="h-6 w-6 text-secondary-foreground" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold">Upload Receipt</h4>
+                <h4 className="font-semibold">Submit Photo/Video</h4>
                 <p className="text-sm text-muted-foreground">
-                  Take a photo or upload an image of your receipt
+                  Upload receipt, photo proof, or video with proof
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          {/* Social Media Actions */}
+          <Card 
+            className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
+              selectedMethod === "social" ? "border-primary bg-primary/5" : "border-border"
+            }`}
+            onClick={() => setSelectedMethod("social")}
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-challenge-purple/10 rounded-full flex items-center justify-center">
+                <Share2 className="h-6 w-6 text-challenge-purple" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold">Social Media Action</h4>
+                <p className="text-sm text-muted-foreground">
+                  Like, Follow, Share or Comment on FB
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          {/* Task Completion */}
+          <Card 
+            className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
+              selectedMethod === "task" ? "border-primary bg-primary/5" : "border-border"
+            }`}
+            onClick={() => setSelectedMethod("task")}
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-progress-green/10 rounded-full flex items-center justify-center">
+                <CheckCircle className="h-6 w-6 text-progress-green" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold">Complete Task</h4>
+                <p className="text-sm text-muted-foreground">
+                  Check task done with proof verification
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          {/* External API Verification */}
+          <Card 
+            className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
+              selectedMethod === "external" ? "border-primary bg-primary/5" : "border-border"
+            }`}
+            onClick={() => setSelectedMethod("external")}
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-warning/10 rounded-full flex items-center justify-center">
+                <ExternalLink className="h-6 w-6 text-warning" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold">Direct Verification</h4>
+                <p className="text-sm text-muted-foreground">
+                  Automatic verification from external API
                 </p>
               </div>
             </div>
@@ -252,14 +312,14 @@ export const ChallengeJoinScreen = ({
               <Button asChild className="game-button w-full" size="lg">
                 <div className="cursor-pointer">
                   <Camera className="h-5 w-5 mr-2" />
-                  {uploadedFile ? "Change Photo" : "Take Photo / Upload"}
+                  {uploadedFile ? "Change Photo/Video" : "Upload Photo/Video"}
                 </div>
               </Button>
             </label>
             <input
               id="receipt-upload"
               type="file"
-              accept="image/*"
+              accept="image/*,video/*"
               onChange={handleFileUpload}
               className="hidden"
             />
@@ -273,7 +333,43 @@ export const ChallengeJoinScreen = ({
             )}
             
             <p className="text-xs text-muted-foreground text-center">
-              Make sure your receipt is clear and all details are visible
+              Submit clear receipt, photo proof, or video with proof
+            </p>
+          </div>
+        )}
+
+        {selectedMethod === "social" && (
+          <div className="space-y-3">
+            <Button className="game-button w-full" size="lg">
+              <Heart className="h-5 w-5 mr-2" />
+              Connect Social Media
+            </Button>
+            <p className="text-xs text-muted-foreground text-center">
+              Complete the required social media actions to proceed
+            </p>
+          </div>
+        )}
+
+        {selectedMethod === "task" && (
+          <div className="space-y-3">
+            <Button className="game-button w-full" size="lg">
+              <CheckCircle className="h-5 w-5 mr-2" />
+              Mark Task Complete
+            </Button>
+            <p className="text-xs text-muted-foreground text-center">
+              Verify that you've completed the required task
+            </p>
+          </div>
+        )}
+
+        {selectedMethod === "external" && (
+          <div className="space-y-3">
+            <Button className="game-button w-full" size="lg">
+              <ExternalLink className="h-5 w-5 mr-2" />
+              Verify Automatically
+            </Button>
+            <p className="text-xs text-muted-foreground text-center">
+              Automatic verification through external API
             </p>
           </div>
         )}

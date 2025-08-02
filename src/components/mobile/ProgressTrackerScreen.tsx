@@ -141,7 +141,7 @@ export const ProgressTrackerScreen = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       <div className="p-4 space-y-4">
-        {/* Level & Points Card */}
+        {/* User Level & Points - Bronze → Silver → Gold Progression */}
         <div className="game-card bg-gradient-to-r from-primary/10 to-primary-glow/10 border-primary/20">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -151,6 +151,14 @@ export const ProgressTrackerScreen = ({ onBack }: { onBack: () => void }) => {
               <div>
                 <h2 className="text-xl font-bold text-primary">{progress.level} Tier</h2>
                 <p className="text-sm text-muted-foreground">Level {progress.level}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                  <span className="text-xs text-muted-foreground">Bronze</span>
+                  <div className="w-3 h-3 rounded-full bg-primary"></div>
+                  <span className="text-xs font-medium">Silver</span>
+                  <div className="w-3 h-3 rounded-full bg-muted border-2 border-muted-foreground"></div>
+                  <span className="text-xs text-muted-foreground">Gold</span>
+                </div>
               </div>
             </div>
             <div className="text-right">
