@@ -1,14 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
+/* GameOn Mobile Design System - Based on Challenge Commander */
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* GameOn Core Colors */
+    --background: 210 20% 98%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -17,14 +17,18 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary GameOn Red */
+    --primary: 349 78% 44%;  /* #a42138 */
+    --primary-foreground: 0 0% 98%;
+    --primary-soft: 343 81% 90%;
+    --primary-glow: 348 90% 40%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-dark: 210 40% 77%;
 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
@@ -34,24 +38,42 @@ All colors MUST be HSL.
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 349 78% 44%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
+    /* GameOn Specific Colors */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    /* Game Theme Colors */
+    --reward-gold: 45 96% 64%;
+    --game-blue: 221 83% 53%;
+    --progress-green: 142 76% 36%;
+    --challenge-purple: 271 91% 65%;
+
+    /* Mobile UI */
+    --mobile-header: 210 20% 98%;
+    --card-shadow: 0 0% 0% / 0.05;
+    --shadow-soft: 220 43% 11% / 0.1;
+    --shadow-card: 220 43% 11% / 0.15;
+
+    /* Status Colors */
+    --verified: 142 76% 36%;
+    --pending: 38 92% 50%;
+    --expired: 0 84% 60%;
+
+    /* Sidebar */
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -65,8 +87,10 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 349 78% 54%;
     --primary-foreground: 222.2 47.4% 11.2%;
+    --primary-soft: 343 81% 25%;
+    --primary-glow: 348 90% 60%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -82,7 +106,14 @@ All colors MUST be HSL.
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 349 78% 44%;
+
+    /* Dark mode game colors */
+    --reward-gold: 45 96% 74%;
+    --game-blue: 221 83% 63%;
+    --progress-green: 142 76% 46%;
+    --challenge-purple: 271 91% 75%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,6 +131,81 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-poppins antialiased;
+    font-weight: 300;
+  }
+
+  /* Mobile-first responsive typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-poppins;
+  }
+  
+  h1 { @apply text-2xl font-semibold; }
+  h2 { @apply text-xl font-medium; }
+  h3 { @apply text-lg font-medium; }
+  
+  .label { @apply font-medium; }
+  .button-text { @apply font-medium; }
+  .card-title { @apply font-semibold; }
+}
+
+@layer components {
+  /* Mobile GameOn Components */
+  .mobile-screen {
+    @apply min-h-screen bg-background;
+    max-width: 428px; /* iPhone 14 Pro Max width */
+    margin: 0 auto;
+  }
+
+  .mobile-header {
+    @apply bg-mobile-header border-b border-border px-4 py-3 flex items-center justify-between;
+  }
+
+  .game-card {
+    @apply bg-card rounded-xl p-4 shadow-sm border border-border;
+    box-shadow: 0 2px 8px hsl(var(--card-shadow));
+  }
+
+  .challenge-badge {
+    @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  .challenge-badge.verified {
+    @apply bg-success/10 text-success border border-success/20;
+  }
+
+  .challenge-badge.pending {
+    @apply bg-warning/10 text-warning border border-warning/20;
+  }
+
+  .challenge-badge.expired {
+    @apply bg-destructive/10 text-destructive border border-destructive/20;
+  }
+
+  .progress-bar {
+    @apply w-full bg-muted rounded-full h-2 overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full bg-gradient-to-r from-primary to-primary-glow transition-all duration-500;
+  }
+
+  .game-button {
+    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground;
+    @apply rounded-xl px-6 py-3 font-medium shadow-lg;
+    @apply transform transition-all duration-200 active:scale-95;
+  }
+
+  .stamp-card {
+    @apply grid grid-cols-5 gap-2 p-4 bg-card rounded-xl border;
+  }
+
+  .stamp {
+    @apply w-12 h-12 rounded-full border-2 border-dashed border-muted-foreground/30;
+    @apply flex items-center justify-center text-muted-foreground;
+  }
+
+  .stamp.collected {
+    @apply border-solid border-primary bg-primary text-primary-foreground;
   }
 }
