@@ -14,44 +14,52 @@ interface Challenge {
   category: "health" | "culinary" | "lifestyle" | "wellness";
   difficulty: "easy" | "medium" | "hard";
   points: number;
+  participationType: 'purchase' | 'social' | 'scan' | 'task' | 'referral';
+  participationDescription: string;
 }
 
 const mockChallenges: Challenge[] = [
   {
     id: "1",
-    title: "Healthy Breakfast Challenge",
-    creator: "FreshMart",
-    reward: "₱500 Voucher",
-    participants: 1247,
-    endDate: "2024-08-15",
+    title: "Coca-Cola Holiday Hunt",
+    creator: "Coca-Cola Philippines",
+    reward: "₱500 GCash + Limited Edition Tumbler",
+    participants: 2847,
+    endDate: "2024-12-31",
     image: "/api/placeholder/300/200",
-    category: "health",
+    category: "lifestyle",
     difficulty: "easy",
-    points: 100
+    points: 150,
+    participationType: 'purchase',
+    participationDescription: 'Buy any Coca-Cola product'
   },
   {
     id: "2", 
-    title: "Coffee Shop Explorer",
-    creator: "Bean & Brew",
-    reward: "Free Coffee for a Month",
-    participants: 856,
-    endDate: "2024-08-20",
+    title: "Jollibee Social Share Challenge",
+    creator: "Jollibee",
+    reward: "Free Family Bucket + ₱200 Voucher",
+    participants: 1923,
+    endDate: "2025-01-15",
     image: "/api/placeholder/300/200",
     category: "culinary",
-    difficulty: "medium",
-    points: 150
+    difficulty: "easy",
+    points: 200,
+    participationType: 'social',
+    participationDescription: 'Share this post on Facebook'
   },
   {
     id: "3",
-    title: "Fitness Gear Hunt",
-    creator: "ActiveLife",
-    reward: "₱1000 Sports Gear",
-    participants: 432,
-    endDate: "2024-08-25",
+    title: "SM Supermalls QR Hunt",
+    creator: "SM Supermalls",
+    reward: "₱1000 Shopping Voucher",
+    participants: 5621,
+    endDate: "2025-02-28",
     image: "/api/placeholder/300/200", 
-    category: "wellness",
-    difficulty: "hard",
-    points: 200
+    category: "lifestyle",
+    difficulty: "medium",
+    points: 300,
+    participationType: 'scan',
+    participationDescription: 'Scan QR codes in-store'
   }
 ];
 
@@ -164,7 +172,8 @@ export const ChallengeListScreen = ({ onSelectChallenge }: { onSelectChallenge: 
                     <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                   </div>
                   
-                  <p className="text-sm text-muted-foreground mb-2">by {challenge.creator}</p>
+                  <p className="text-sm text-muted-foreground mb-1">by {challenge.creator}</p>
+                  <p className="text-xs text-muted-foreground mb-2">{challenge.participationDescription}</p>
                   
                   <div className="flex items-center gap-2 mb-2">
                     <span className={`challenge-badge ${categoryColors[challenge.category]}`}>

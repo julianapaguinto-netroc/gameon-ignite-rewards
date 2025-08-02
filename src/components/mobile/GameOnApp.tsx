@@ -22,6 +22,8 @@ interface Challenge {
   products: any[];
   startDate: string;
   rules: string[];
+  participationType: 'purchase' | 'social' | 'scan' | 'task' | 'referral';
+  participationDescription: string;
 }
 
 interface GameReward {
@@ -90,39 +92,66 @@ export const GameOnApp = () => {
   };
 
   // Mock challenge details for demo
-  const mockChallengeDetails = {
+  const mockChallengeDetails = selectedChallenge ? {
     ...selectedChallenge,
-    description: "Start your day right with nutritious breakfast choices! Purchase any qualifying healthy breakfast item and share your morning routine.",
-    howToParticipate: [
-      "Buy any qualifying product from participating stores",
-      "Scan the QR code on your receipt OR upload photo",
-      "Play the breakfast spin wheel game",
-      "Share your healthy breakfast on social media (optional bonus)"
-    ],
-    products: [
+    description: selectedChallenge.participationType === 'purchase' 
+      ? "Purchase eligible products and verify with QR code or receipt upload to unlock your reward game!"
+      : selectedChallenge.participationType === 'social'
+      ? "Share this challenge on Facebook to unlock the game and win amazing rewards!"
+      : selectedChallenge.participationType === 'scan'
+      ? "Find and scan QR codes in participating stores to unlock your reward game!"
+      : "Complete the required task to unlock your reward game!",
+    howToParticipate: selectedChallenge.participationType === 'purchase' 
+      ? [
+          "Buy any qualifying product from participating stores",
+          "Scan the QR code on your receipt OR upload photo",
+          "Play the reward game",
+          "Claim your prize!"
+        ]
+      : selectedChallenge.participationType === 'social'
+      ? [
+          "Click the Share button below",
+          "Share this challenge post on your Facebook",
+          "Return to the app to verify",
+          "Play the reward game and win!"
+        ]
+      : selectedChallenge.participationType === 'scan'
+      ? [
+          "Visit participating stores",
+          "Find QR codes on displays or posters",
+          "Scan the QR codes with the app",
+          "Play the reward game!"
+        ]
+      : [
+          "Complete the required task",
+          "Submit proof of completion",
+          "Verify your submission",
+          "Play the reward game!"
+        ],
+    products: selectedChallenge.participationType === 'purchase' ? [
       {
         id: "1",
-        name: "Organic Oatmeal",
-        store: "FreshMart",
-        price: "₱120",
+        name: "Coca-Cola Original 330ml",
+        store: "7-Eleven",
+        price: "₱25",
         image: "/api/placeholder/80/80"
       },
       {
         id: "2",
-        name: "Greek Yogurt",
-        store: "FreshMart", 
-        price: "₱85",
+        name: "Coca-Cola Zero 500ml",
+        store: "Ministop", 
+        price: "₱35",
         image: "/api/placeholder/80/80"
       }
-    ],
+    ] : [],
     startDate: "2024-08-01",
     rules: [
-      "One entry per receipt",
-      "Purchase must be made during challenge period",
-      "Receipt must be clear and readable",
-      "Minimum purchase of ₱50 required"
+      "One entry per user per day",
+      "Must complete participation requirement",
+      "Valid during challenge period only",
+      "Follow community guidelines"
     ]
-  };
+  } : null;
 
   switch (currentScreen) {
     case "challenge-list":

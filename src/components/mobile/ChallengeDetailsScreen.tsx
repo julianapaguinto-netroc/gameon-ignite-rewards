@@ -27,6 +27,8 @@ interface Challenge {
   products: Product[];
   startDate: string;
   rules: string[];
+  participationType: 'purchase' | 'social' | 'scan' | 'task' | 'referral';
+  participationDescription: string;
 }
 
 const mockChallenge: Challenge = {
@@ -41,6 +43,8 @@ const mockChallenge: Challenge = {
   category: "health",
   difficulty: "easy",
   points: 100,
+  participationType: 'purchase',
+  participationDescription: 'Buy any qualifying healthy breakfast item',
   description: "Start your day right with nutritious breakfast choices! Purchase any qualifying healthy breakfast item and share your morning routine.",
   howToParticipate: [
     "Buy any qualifying product from participating stores",

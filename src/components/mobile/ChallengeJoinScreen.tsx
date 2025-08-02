@@ -9,6 +9,8 @@ interface Challenge {
   creator: string;
   reward: string;
   points: number;
+  participationType: 'purchase' | 'social' | 'scan' | 'task' | 'referral';
+  participationDescription: string;
 }
 
 type VerificationMethod = "qr" | "receipt" | "social" | "task" | "external" | null;
@@ -189,108 +191,139 @@ export const ChallengeJoinScreen = ({
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">How to Participate</h3>
           <p className="text-muted-foreground text-sm">
-            Choose your preferred method to participate in this challenge.
+            {challenge.participationDescription}
           </p>
 
-          {/* QR Code Option */}
-          <Card 
-            className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
-              selectedMethod === "qr" ? "border-primary bg-primary/5" : "border-border"
-            }`}
-            onClick={() => setSelectedMethod("qr")}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                <QrCode className="h-6 w-6 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold">Scan QR Code</h4>
-                <p className="text-sm text-muted-foreground">
-                  Scan QR code from receipt or easter egg
-                </p>
-              </div>
-            </div>
-          </Card>
+          {/* Purchase-based challenges */}
+          {challenge.participationType === 'purchase' && (
+            <>
+              <Card 
+                className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
+                  selectedMethod === "qr" ? "border-primary bg-primary/5" : "border-border"
+                }`}
+                onClick={() => setSelectedMethod("qr")}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <QrCode className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold">Scan QR Code</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Scan QR code from receipt
+                    </p>
+                  </div>
+                </div>
+              </Card>
 
-          {/* Photo/Video Upload */}
-          <Card 
-            className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
-              selectedMethod === "receipt" ? "border-primary bg-primary/5" : "border-border"
-            }`}
-            onClick={() => setSelectedMethod("receipt")}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
-                <Camera className="h-6 w-6 text-secondary-foreground" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold">Submit Photo/Video</h4>
-                <p className="text-sm text-muted-foreground">
-                  Upload receipt, photo proof, or video with proof
-                </p>
-              </div>
-            </div>
-          </Card>
+              <Card 
+                className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
+                  selectedMethod === "receipt" ? "border-primary bg-primary/5" : "border-border"
+                }`}
+                onClick={() => setSelectedMethod("receipt")}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
+                    <Camera className="h-6 w-6 text-secondary-foreground" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold">Upload Receipt</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Upload clear receipt photo
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </>
+          )}
 
-          {/* Social Media Actions */}
-          <Card 
-            className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
-              selectedMethod === "social" ? "border-primary bg-primary/5" : "border-border"
-            }`}
-            onClick={() => setSelectedMethod("social")}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-challenge-purple/10 rounded-full flex items-center justify-center">
-                <Share2 className="h-6 w-6 text-challenge-purple" />
+          {/* Social-based challenges */}
+          {challenge.participationType === 'social' && (
+            <Card 
+              className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
+                selectedMethod === "social" ? "border-primary bg-primary/5" : "border-border"
+              }`}
+              onClick={() => setSelectedMethod("social")}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-challenge-purple/10 rounded-full flex items-center justify-center">
+                  <Share2 className="h-6 w-6 text-challenge-purple" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold">Share on Facebook</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Share this post to unlock the game
+                  </p>
+                </div>
               </div>
-              <div className="flex-1">
-                <h4 className="font-semibold">Social Media Action</h4>
-                <p className="text-sm text-muted-foreground">
-                  Like, Follow, Share or Comment on FB
-                </p>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          )}
 
-          {/* Task Completion */}
-          <Card 
-            className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
-              selectedMethod === "task" ? "border-primary bg-primary/5" : "border-border"
-            }`}
-            onClick={() => setSelectedMethod("task")}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-progress-green/10 rounded-full flex items-center justify-center">
-                <CheckCircle className="h-6 w-6 text-progress-green" />
+          {/* Scan-based challenges */}
+          {challenge.participationType === 'scan' && (
+            <Card 
+              className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
+                selectedMethod === "qr" ? "border-primary bg-primary/5" : "border-border"
+              }`}
+              onClick={() => setSelectedMethod("qr")}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                  <QrCode className="h-6 w-6 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold">Scan QR Code</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Scan QR codes in-store displays
+                  </p>
+                </div>
               </div>
-              <div className="flex-1">
-                <h4 className="font-semibold">Complete Task</h4>
-                <p className="text-sm text-muted-foreground">
-                  Check task done with proof verification
-                </p>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          )}
 
-          {/* External API Verification */}
-          <Card 
-            className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
-              selectedMethod === "external" ? "border-primary bg-primary/5" : "border-border"
-            }`}
-            onClick={() => setSelectedMethod("external")}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-warning/10 rounded-full flex items-center justify-center">
-                <ExternalLink className="h-6 w-6 text-warning" />
+          {/* Task-based challenges */}
+          {challenge.participationType === 'task' && (
+            <Card 
+              className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
+                selectedMethod === "task" ? "border-primary bg-primary/5" : "border-border"
+              }`}
+              onClick={() => setSelectedMethod("task")}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-progress-green/10 rounded-full flex items-center justify-center">
+                  <CheckCircle className="h-6 w-6 text-progress-green" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold">Complete Task</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Complete survey or watch video
+                  </p>
+                </div>
               </div>
-              <div className="flex-1">
-                <h4 className="font-semibold">Direct Verification</h4>
-                <p className="text-sm text-muted-foreground">
-                  Automatic verification from external API
-                </p>
+            </Card>
+          )}
+
+          {/* Referral-based challenges */}
+          {challenge.participationType === 'referral' && (
+            <Card 
+              className={`p-4 cursor-pointer transition-all border-2 hover:shadow-md ${
+                selectedMethod === "external" ? "border-primary bg-primary/5" : "border-border"
+              }`}
+              onClick={() => setSelectedMethod("external")}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-warning/10 rounded-full flex items-center justify-center">
+                  <ExternalLink className="h-6 w-6 text-warning" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold">Invite Friends</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Invite friends to join this challenge
+                  </p>
+                </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          )}
         </div>
 
         {/* Action Buttons */}
